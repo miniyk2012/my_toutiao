@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+mypy = "*"
+walrus = {index = "p-lock",version = "*"}
+pytest = {index = "p-lock",version = "*"}
 
 [requires]
 python_version = "3.7"
