@@ -1,12 +1,26 @@
 """
 提供props常见操作支持，需要对应的类支持get_uuid, 目前是IData
 """
+import json
 from datetime import datetime
-from json import dumps as encode, loads as decode
 
-from walrus import Database
+from sqlalchemy.ext.serializer import loads, dumps
+from walrus import Database as _Database
 
 from config import REDIS_URL
+from corelib.local_cache import lc
+
+
+class Database(_Database):
+    """提供2个直接反序列化结果的方法"""
+    def get2(self, name):
+        rs = super().get(name)
+        return loads(rs)
+
+    def set2(self, name, value, ex=None, px=None, nx=False, xx=False):
+        value = dumps(value)
+        return super().set(name, value, ex=ex, px=px, nx=nx, xx=xx)
+
 
 rdb = Database.from_url(REDIS_URL)
 
@@ -26,15 +40,23 @@ class PropsMixin(object):
         return '%s/props' % self.get_uuid()
 
     def _get_props(self):
-        props = rdb.get(self._props_db_key) or ''
-        props = props and decode(props) or {}
+        """优先读本地缓存, 若没有再读redis中的值"""
+        props = lc.get(self._props_name)
+        if props is None:
+            props = rdb.get(self._props_db_key) or ''
+            props = props and json.loads(props) or {}
+            lc.set(self._props_name, props)
         return props
 
     def _set_props(self, props):
-        rdb.set(self._props_db_key, encode(props))
+        rdb.set(self._props_db_key, json.dumps(props))
+        lc.delete(self._props_name)
 
-    def _destroy_props(self):
+    def _destory_props(self):
         rdb.delete(self._props_db_key)
+        lc.delete(self._props_name)
+
+    _destroy_props = _destory_props
 
     get_props = _get_props
     set_props = _set_props
@@ -74,21 +96,25 @@ class PropsMixin(object):
 
 
 class PropsItem(object):
-    def __init__(self, name, default=None, output_filter=None):
+
+    def __init__(self, name, default=None, output_filter=None, pre_set=None):
         self.name = name
         self.default = default
         self.output_filter = output_filter
+        self.pre_set = pre_set
 
     def __get__(self, obj, objtype):
         r = obj.get_props_item(self.name, None)
         if r is None:
-            return self.default
+            return copy.deepcopy(self.default)
         elif self.output_filter:
             return self.output_filter(r)
         else:
             return r
 
     def __set__(self, obj, value):
+        if self.pre_set:
+            value = self.pre_set(value)
         obj.set_props_item(self.name, value)
 
     def __delete__(self, obj):

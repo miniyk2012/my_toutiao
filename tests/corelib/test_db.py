@@ -33,3 +33,5 @@ class TestPropsMixin:
         assert book1.title == '牛逼哄哄'
         assert book1.date == datetime.datetime.strptime('2019-09-11', '%Y-%m-%d').date()
         assert book1.id == id(book1)
+
+        assert book1.id != book2.id

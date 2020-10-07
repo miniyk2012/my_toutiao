@@ -9,6 +9,14 @@ verify_ssl = true
 mypy = "*"
 walrus = {index = "p-lock",version = "*"}
 pytest = {index = "p-lock",version = "*"}
+sqlalchemy = "*"
+ipython = "*"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
+flask-security = "*"
+pymysql = "*"
+flask = "*"
+email-validator = "*"
 
 [requires]
 python_version = "3.7"

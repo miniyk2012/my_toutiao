@@ -25,8 +25,12 @@
 
 在写model的时候, 就准备好缓存
 1. User
-2. 关注关系
+2. Contact 关注关系
 3. Post
 4. Like
 5. Collect
 6. Tag
+
+### 4. 大家Flask应用
+
+### 5. 表管理(flask-migrate)
