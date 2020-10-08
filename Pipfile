@@ -17,6 +17,7 @@ flask-security = "*"
 pymysql = "*"
 flask = "*"
 email-validator = "*"
+"dogpile.cache" = "*"
 
 [requires]
 python_version = "3.7"

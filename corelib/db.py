@@ -3,7 +3,7 @@
 """
 import json
 from datetime import datetime
-
+import copy
 from sqlalchemy.ext.serializer import loads, dumps
 from walrus import Database as _Database
 
