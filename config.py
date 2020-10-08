@@ -15,6 +15,11 @@ SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/mytoutiao?charset=utf
 if not os.path.exists(UPLOAD_FOLDER):
     os.mkdir(UPLOAD_FOLDER)
 
+try:
+    from local_settings import *  # noqa
+except ImportError:
+    pass
+
 
 
 
