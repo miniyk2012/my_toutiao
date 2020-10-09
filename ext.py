@@ -257,7 +257,7 @@ class CombinedMeta(BindDBPropertyMixin, DefaultMeta):
 
 class BaseModel(PropsMixin, Model):
     """
-    1. 提供cache功能
+    1. 通过dogpile.cache提供sql语句的cache, 保存在redis里面(_key_from_query函数可以看出来)
     2. 另外提供3个默认的字段id, created_at, updated_at
     3. 提供 PropsMixin的功能
     """
