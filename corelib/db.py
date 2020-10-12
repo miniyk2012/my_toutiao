@@ -40,7 +40,7 @@ class PropsMixin(object):
         return '%s/props' % self.get_uuid()
 
     def _get_props(self):
-        """优先读本地缓存, 若没有再读redis中的值"""
+        """优先读本地缓存, 若没有再读redis中的值, 并更新本地缓存"""
         props = lc.get(self._props_name)
         if props is None:
             props = rdb.get(self._props_db_key) or ''

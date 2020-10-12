@@ -6,6 +6,8 @@ from ext import db
 class BaseMixin(object):
     @classmethod
     def get_db_props(cls, kwargs):
+        """返回PropsItem类型的字段
+        _db_columns里面保存的是PropsItem的字段"""
         props = {}
         for col, default in cls._db_columns:
             props[col] = kwargs.pop(col, default)

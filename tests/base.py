@@ -10,9 +10,13 @@ class BaseTestCase(unittest.TestCase):
         self.context.push()
         self.client = app.test_client()
         self.runner = app.test_cli_runner()
-
         db.create_all()
+        print('-' * 50)
+        print('\n' * 5)
 
     def tearDown(self):
-        db.drop_all()
+        print('\n' * 5)
+        print('-' * 50)
         self.context.pop()
+        with app.app_context():
+            db.drop_all()

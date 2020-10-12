@@ -9,7 +9,7 @@ UPLOAD_FOLDER = os.path.join(HERE, 'permdir')
 
 
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/mytoutiao?charset=utf8mb4'  # noqa
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root::123456@localhost/mytoutiao?charset=utf8mb4'  # noqa
 
 
 if not os.path.exists(UPLOAD_FOLDER):

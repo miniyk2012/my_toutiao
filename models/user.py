@@ -1,7 +1,23 @@
-from flask_security import UserMixin
+import os
 
+import requests
+from flask_security import UserMixin, RoleMixin
+
+from config import UPLOAD_FOLDER
+from corelib.utils import generate_id
 from ext import db
 from models.mixin import BaseMixin
+
+roles_users = db.Table(
+    'roles_users',
+    db.Column('user_id', db.Integer(), db.ForeignKey('users.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id')),
+)
+
+
+class Role(db.Model, RoleMixin):
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(191))
 
 
 class User(db.Model, UserMixin, BaseMixin):
@@ -28,3 +44,31 @@ class User(db.Model, UserMixin, BaseMixin):
         db.Index('idx_name', name),
         db.Index('idx_email', email),
     )
+
+    def url(self):
+        return '/user/{}'.format(self.id)
+
+    @property
+    def avatar_path(self):
+        avatar_id = self.avatar_id
+        return '' if not avatar_id else '{}/static/avatars/{}.png'.format(avatar_id)
+
+    def update_avatar(self, avatar_id):
+        self.avatar_id = avatar_id
+        self.save()
+
+    def upload_avatar(self, avatar_url):
+        avatar_id = generate_id()
+        filename = os.path.join(
+            UPLOAD_FOLDER, 'avatars', '{}.png'.format(avatar_id))
+        r = requests.get(avatar_url, stream=True)
+        if r.status_code == 200:
+            with open(filename, 'wb') as f:
+                for chunk in r.iter_content(1024):
+                    f.write(chunk)
+            self.avatar_id = avatar_id
+            self.save()
+
+
+
+
