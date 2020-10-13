@@ -1,7 +1,8 @@
 import os
 
 import requests
-from flask_security import UserMixin, RoleMixin
+from flask_security import UserMixin, RoleMixin, SQLAlchemyUserDatastore
+from sqlalchemy import func as alchemyFn
 
 from config import UPLOAD_FOLDER
 from corelib.utils import generate_id
@@ -39,6 +40,8 @@ class User(db.Model, UserMixin, BaseMixin):
     confirmed_at = db.Column(db.DateTime())
     company = db.Column(db.String(191), default='')
     avatar_id = db.Column(db.String(20), default='')
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
 
     __table_args__ = (
         db.Index('idx_name', name),
@@ -70,5 +73,25 @@ class User(db.Model, UserMixin, BaseMixin):
             self.save()
 
 
+class BranSQLAlchemyUserDatastore(SQLAlchemyUserDatastore):
+
+    def get_user_name(self, identifier):
+        return self._get_user(identifier, 'name')
+
+    def get_user_email(self, identifier):
+        return self._get_user(identifier, 'email')
+
+    def _get_user(self, identifier, attr):
+        user_model_query = self.user_model.query
+        if hasattr(self.user_model, 'roles'):
+            from sqlalchemy.orm import joinedload
+            user_model_query = user_model_query.options(joinedload('roles'))
+
+        query = alchemyFn.lower(getattr(self.user_model, attr)) \
+                == alchemyFn.lower(identifier)
+        rv = user_model_query.filter(query).first()
+        if rv is not None:
+            return rv
 
 
+user_datastore = BranSQLAlchemyUserDatastore(db, User, Role)
