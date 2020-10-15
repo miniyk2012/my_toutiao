@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 
 from ext import db
@@ -79,6 +80,7 @@ class BaseMixin(object):
 
 
 class ActionMixin(BaseMixin):
+    """主要是提供一个写通用功能, 供各Model复用"""
     action_type = None
 
     @classmethod
