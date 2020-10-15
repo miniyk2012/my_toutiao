@@ -1,4 +1,4 @@
-"""redis缓存装饰器"""
+"""redis缓存装饰器, 由豆瓣的lib-mc修改得来"""
 
 import inspect
 import re

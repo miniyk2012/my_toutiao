@@ -257,7 +257,7 @@ class CombinedMeta(BindDBPropertyMixin, DefaultMeta):
 
 class BaseModel(PropsMixin, Model):
     """
-    1. 提供查询时的cache功能(_key_from_query,_cache_key以及dogpile配合, 将sql查询结果存在redis里, 作为一级缓存)
+    1. 提供sql查询时的cache功能(_key_from_query,_cache_key以及dogpile配合, 将sql查询结果存在redis里, 类似mybatis的缓存)
     2. 另外提供3个默认的字段id, created_at, updated_at
     3. 提供 PropsMixin的功能
     """
