@@ -1,19 +1,17 @@
 import math
 from datetime import datetime
 
-from ext import db
 from config import PER_PAGE
+from corelib.mc import cache, rdb
+from ext import db
 from models.consts import K_POST
 from models.utils import incr_key
-from corelib.mc import cache, rdb
 
 MC_KEY_STATS_N = 'like_n:%s:%s:%s'  # action_type, target_id, target_kind
 MC_KEY_BY_UESR_STATS_N = 'like_n_by_user:%s:%s:%s'  # action_type, user_id, target_kind
 MC_KEY_ACTION_ITEMS = 'action_items:%s:%s:%s:%s'  # action_type, target_id, target_kind, page
 MC_KEY_ACTION_ITEM_BY_UESR = 'action_item_by_user:%s:%s:%s:%s'  # action_type, user_id, target_id, target_kind
 MC_KEY_ACTION_ITEMS_BY_UESR = 'action_items_by_user:%s:%s:%s:%s'  # action_type, user_id, target_kind, page
-
-
 
 
 class BaseMixin(object):
@@ -121,11 +119,11 @@ class ActionMixin(BaseMixin):
     def gets_by_target(cls, target_id, target_kind, page=1):
         query = cls.query.filter_by(target_id=target_id,
                                     target_kind=target_kind).order_by(
-                                        cls.id.desc())
+            cls.id.desc())
         if page is None:
             items = query.all()
         else:
-            items = query.limit(PER_PAGE).offset(page*PER_PAGE * (page -1))
+            items = query.limit(PER_PAGE).offset(page * PER_PAGE * (page - 1))
         return items
 
     @classmethod

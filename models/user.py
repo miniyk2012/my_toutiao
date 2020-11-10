@@ -7,6 +7,7 @@ from sqlalchemy import func as alchemyFn
 from config import UPLOAD_FOLDER
 from corelib.utils import generate_id
 from ext import db
+from models.contact import Contact
 from models.mixin import BaseMixin
 
 roles_users = db.Table(
@@ -71,6 +72,24 @@ class User(db.Model, UserMixin, BaseMixin):
                     f.write(chunk)
             self.avatar_id = avatar_id
             self.save()
+
+    def follow(self, from_id):
+        ok, _ = Contact.create(to_id=self.id, from_id=from_id)
+        if ok:
+            self._stats =None
+        return ok
+
+    def unfollow(self, from_id):
+        contact = Contact.get_follow_item(from_id, self.id)
+        if contact:
+            contact.delete()
+            self._stats =None
+            return True
+        return False
+
+    def is_followed_by(self, user_id):
+        contact = Contact.get_follow_item(user_id, self.id)
+        return bool(contact)
 
 
 class BranSQLAlchemyUserDatastore(SQLAlchemyUserDatastore):

@@ -1,4 +1,4 @@
-from flask import Flask
+from corelib.flask import Flask
 
 import config
 from ext import security, db

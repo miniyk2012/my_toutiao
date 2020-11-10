@@ -1,14 +1,14 @@
-from ext import db
-
-from models.mixin import BaseMixin
 from corelib.mc import cache, rdb
+from ext import db
+from models.mixin import BaseMixin
 
 MC_KEY_COLLECT_N = 'collect_n:%s:%s'
+
 
 class CollectItem(BaseMixin, db.Model):
     """收藏"""
     __tablename__ = 'collect_items'
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)  # 谁收藏的
     target_id = db.Column(db.Integer)  # 收藏的目标id
     target_kind = db.Column(db.Integer)  # 收藏的种类, 比如post
 
@@ -36,9 +36,9 @@ class CollectItem(BaseMixin, db.Model):
 
 class CollectMixin:
     def collect(self, user_id):
-        """收藏功能, 如果self是post. 调用该函数, 就会建一条指向post的CollectItem"""
+        """收藏功能, 如果self是post. 调用该函数, 就会建一条指向post的CollectItem, 不过最多只会收藏"""
         item = CollectItem.get_by_target(user_id, self.id, self.kind)
-        if item:
+        if item:  # 最多收藏一次
             return False
         ok, _ = CollectItem.create(user_id=user_id, target_id=self.id,
                                    target_kind=self.kind)
@@ -54,9 +54,3 @@ class CollectMixin:
     @property
     def n_collects(self):
         return int(CollectItem.get_count_by_target(self.id, self.kind))
-
-    def is_collected_by(self, user_id):
-        return CollectItem.is_action_by(user_id, self.id, self.kind)
-
-
-
