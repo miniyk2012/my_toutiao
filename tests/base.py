@@ -1,4 +1,7 @@
+import os
 import unittest
+
+os.environ["env"] = "test"
 
 from app import app
 from ext import db

@@ -1,8 +1,9 @@
+from tests.base import BaseTestCase
+
 from sqlalchemy import text
 
 from ext import db
 from models.user import User
-from tests.base import BaseTestCase
 
 
 class MixinTestCase(BaseTestCase):

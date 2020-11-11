@@ -1,7 +1,19 @@
 ### Usage
-初始化数据库:
-mysql: create database mytoutiao;
-FLASK_APP=manage.py
+初始化数据库: mysql -uroot -p  密码是: 123456
+生产mysql: create database mytoutiao;
+测试mysql: create database test_mytoutiao;
+```
+FLASK_APP=manage.py flask db init
+FLASK_APP=manage.py flask db migrate
+FLASK_APP=manage.py flask db upgrade
+```
+
+### 测试mysql
+见test_post.py, 用idea的Run功能时, 请把`from tests.base import BaseTestCase`放在第一行, 因为base.py中会设置env=test
+或用命令行:
+```
+env=test pytest -s
+```
 
 ### 1. 需求
 

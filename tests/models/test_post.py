@@ -1,5 +1,5 @@
-from models.core import Post
 from tests.base import BaseTestCase
+from models.core import Post
 
 
 class PostTestCase(BaseTestCase):
