@@ -1,3 +1,8 @@
+### Usage
+初始化数据库:
+mysql: create database mytoutiao;
+FLASK_APP=manage.py
+
 ### 1. 需求
 
 1. Post页面
