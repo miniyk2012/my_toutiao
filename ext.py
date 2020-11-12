@@ -45,6 +45,7 @@ def _key_from_query(query, qualifier=None):
 
 
 class CachingQuery(BaseQuery):
+    """CachingQuery,Query,Cache互相配合, sql相同的语句结果直接换成在redis中"""
     def __init__(self, regions, entities, *args, **kw):
         self.cache_regions = regions
         BaseQuery.__init__(self, entities=entities, *args, **kw)
@@ -343,6 +344,6 @@ class UnLockedAlchemy(SQLAlchemy):
         return super(UnLockedAlchemy, self).apply_driver_hacks(
             app, info, options)
 
-
+# BaseModel代替了默认的Model, 继承db.Model的那些model就能正常处理保存在redis的字段了
 db = UnLockedAlchemy(model_class=BaseModel)
 security = Security()

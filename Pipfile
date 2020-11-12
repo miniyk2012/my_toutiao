@@ -19,6 +19,7 @@ flask = "*"
 email-validator = "*"
 "dogpile.cache" = "*"
 requests = "*"
+feedparser = "*"
 
 [requires]
 python_version = "3.7"

@@ -13,6 +13,7 @@ class BaseTestCase(unittest.TestCase):
         self.context.push()
         self.client = app.test_client()
         self.runner = app.test_cli_runner()
+        db.drop_all()
         db.create_all()
         print('-' * 50)
         print('\n' * 5)

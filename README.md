@@ -7,12 +7,21 @@ FLASK_APP=manage.py flask db init
 FLASK_APP=manage.py flask db migrate
 FLASK_APP=manage.py flask db upgrade
 ```
+运行flask
+```
+FLASK_APP=app.py flask run
+```
 
 ### 测试mysql
 见test_post.py, 用idea的Run功能时, 请把`from tests.base import BaseTestCase`放在第一行, 因为base.py中会设置env=test
 或用命令行:
 ```
 env=test pytest -s
+```
+
+### 爬虫准备数据
+```
+python crawling.py
 ```
 
 ### 1. 需求
@@ -48,6 +57,8 @@ env=test pytest -s
 5. Collect
 6. Tag
 
-### 4. 大家Flask应用
+### 4. 搭建Flask应用
 
 ### 5. 表管理(flask-migrate)
+
+### 6. 准备数据(写爬虫): 爬RSS: https://www.dongwm.com/atom.xml
