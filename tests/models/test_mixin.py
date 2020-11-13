@@ -21,4 +21,5 @@ class MixinTestCase(BaseTestCase):
         assert query_user2.name == 'yangkaia'
 
         # Todo: delete的时候可以删除redis缓存, 但不知为何query_user2.delete()会报错
-        query_user.delete()
+        # query_user.delete()
+        # print(1)

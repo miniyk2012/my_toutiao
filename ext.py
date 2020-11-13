@@ -46,6 +46,7 @@ def _key_from_query(query, qualifier=None):
 
 class CachingQuery(BaseQuery):
     """CachingQuery,Query,Cache互相配合, sql相同的语句结果直接换成在redis中"""
+
     def __init__(self, regions, entities, *args, **kw):
         self.cache_regions = regions
         BaseQuery.__init__(self, entities=entities, *args, **kw)
@@ -299,12 +300,23 @@ class BaseModel(PropsMixin, Model):
         return dct
 
     @staticmethod
-    def _flush_event(mapper, connection, target):
-        target.cache._flush_all(target)
-        target.__flush_event__(target)
+    def _flush_insert_event(mapper, connection, target):
+        target._flush_event(mapper, connection, target)
 
     @staticmethod
-    def _flush_del_event(mapper, connection, target):
+    def _flush_after_update_event(mapper, connection, target):
+        target._flush_event(mapper, connection, target)
+
+    @staticmethod
+    def _flush_before_update_event(mapper, connection, target):
+        target._flush_event(mapper, connection, target)
+
+    @staticmethod
+    def _flush_delete_event(mapper, connection, target):
+        target._flush_event(mapper, connection, target)
+
+    @staticmethod
+    def _flush_event(mapper, connection, target):
         target.cache._flush_all(target)
         target.__flush_event__(target)
 
@@ -314,9 +326,10 @@ class BaseModel(PropsMixin, Model):
 
     @classmethod
     def __declare_last__(cls):
-        event.listen(cls, 'before_delete', cls._flush_event)
-        event.listen(cls, 'after_update', cls._flush_event)
-        event.listen(cls, 'after_insert', cls._flush_del_event)
+        event.listen(cls, 'after_delete', cls._flush_delete_event)
+        event.listen(cls, 'after_update', cls._flush_after_update_event)
+        event.listen(cls, 'before_update', cls._flush_before_update_event)
+        event.listen(cls, 'after_insert', cls._flush_insert_event)
 
 
 class UnLockedAlchemy(SQLAlchemy):
@@ -343,6 +356,7 @@ class UnLockedAlchemy(SQLAlchemy):
             options['isolation_level'] = 'READ COMMITTED'
         return super(UnLockedAlchemy, self).apply_driver_hacks(
             app, info, options)
+
 
 # BaseModel代替了默认的Model, 继承db.Model的那些model就能正常处理保存在redis的字段了
 db = UnLockedAlchemy(model_class=BaseModel)
