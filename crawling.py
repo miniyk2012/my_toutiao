@@ -12,7 +12,7 @@ class MLStripper(HTMLParser):
         super().__init__()
         self.reset()
         self.strict = False
-        self.convert_charrefs= True
+        self.convert_charrefs = True
         self.fed = []
 
     def handle_data(self, d):
@@ -20,3 +20,52 @@ class MLStripper(HTMLParser):
 
     def get_data(self):
         return ''.join(self.fed)
+
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
+
+
+def fetch(url):
+    d = feedparser.parse(url)
+    entries = d.entries
+
+    for entry in entries:
+        try:
+            content = entry.content and entry.content[0].value
+        except AttributeError:
+            content = entry.summary or entry.title
+        try:
+            created_at = datetime.strptime(entry.published, '%Y-%m-%dT%H:%M:%S.%fZ')
+        except ValueError:
+            created_at = datetime.strptime(entry.published, '%a, %d %b %Y %H:%M:%S %z')
+        try:
+            tags = entry.tags
+        except AttributeError:
+            tags = []
+
+        ok, post = Post.create_or_update(
+            author_id=2, title=entry.title, orig_url=entry.link,
+            content=strip_tags(content), created_at=created_at,
+            tags=[tag.term for tag in tags])
+
+
+def main():
+    with app.test_request_context():
+        for model in (Post, Tag, PostTag):
+            model.query.delete()  # 数据库操作要通过SQLAlchemy，不要直接链接数据库操作
+        db.session.commit()
+
+        for site in (
+                'http://www.dongwm.com/atom.xml',):
+            fetch(site)
+
+
+if __name__ == '__main__':
+    main()
+    with app.test_request_context():
+        post = Post.query.first()
+        print(post.content)
+        print(post.title)

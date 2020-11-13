@@ -262,6 +262,7 @@ class BaseModel(PropsMixin, Model):
     1. 提供sql查询时的cache功能(_key_from_query,_cache_key以及dogpile配合, 将sql查询结果存在redis里, 类似mybatis的缓存)
     2. 另外提供3个默认的字段id, created_at, updated_at
     3. 提供 PropsMixin的功能
+    4. 我发现在删除记录的时候, 并不能保证删除PropItems和cache的数据, 这样可能导致删除后还能查出数据, 或者redis可能会用尽
     """
     cache_label = "default"
     cache_regions = regions
@@ -320,9 +321,28 @@ class BaseModel(PropsMixin, Model):
         target.cache._flush_all(target)
         target.__flush_event__(target)
 
+
     @classmethod
     def __flush_event__(cls, target):
         pass
+
+    @classmethod
+    def __flush_delete_event__(cls, target):
+        pass
+
+    @classmethod
+    def __flush_insert_event__(cls, target):
+        pass
+
+    @classmethod
+    def __flush_after_update_event__(cls, target):
+        pass
+
+    @classmethod
+    def __flush_before_update_event__(cls, target):
+        pass
+
+
 
     @classmethod
     def __declare_last__(cls):
