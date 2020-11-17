@@ -65,6 +65,6 @@ def main():
 if __name__ == '__main__':
     # main()
     with app.test_request_context():
-        post = Post.get_or_404(121)
+        post = Post.query.first()
         print(post.content)
         print(post.title)

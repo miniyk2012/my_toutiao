@@ -10,6 +10,7 @@ FLASK_APP=manage.py flask db upgrade
 运行flask
 ```
 FLASK_APP=app.py flask run
+FLASK_APP=app.py FLASK_DEBUG=1 flask run
 ```
 
 ### 测试mysql
@@ -74,3 +75,7 @@ cnpm i
 使用webpack:
 npm run start:  watch src目录的变化, 生成static/dist/*的js文件
 python run.py:  watch src/templates目录的变化, 动态加载前端页面
+
+### 10. 完成Post页面样式
+
+### 11. 注册和登录

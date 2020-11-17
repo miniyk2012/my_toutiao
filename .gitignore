@@ -292,3 +292,4 @@ npm-debug.log
 yarn-error.log
 
 # End of https://www.gitignore.io/api/flask,python,pycharm+all,visualstudiocode,vuejs
+migrations

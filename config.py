@@ -7,7 +7,7 @@ DEBUG = False
 SECRET_KEY = '123'
 UPLOAD_FOLDER = os.path.join(HERE, 'permdir')
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost/mytoutiao?charset=utf8mb4'  # noqa
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:12345678@localhost/mytoutiao?charset=utf8mb4'  # noqa
 SQLALCHEMY_ECHO = False
 PER_PAGE = 2
 
@@ -19,3 +19,4 @@ if os.getenv('env') == 'test':
         from local_settings import *  # noqa
     except ImportError:
         pass
+
