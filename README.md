@@ -78,6 +78,8 @@ python run.py:  watch src/templates目录的变化, 动态加载前端页面
 
 ### 10. 完成Post页面样式
 样式使用webpack来管理, 然后模板导入dist/xx.js
+阿里的icon库: https://www.iconfont.cn/
 
 ### 11. 注册和登录
+pip install git+https://github.com/dongweiming/flask-security.git@develop#egg=flask_security
 flask security的一系列功能: mail, 各种页面替换成中文
