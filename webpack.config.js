@@ -21,7 +21,11 @@ const config = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader,
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader",
+                ],
             },
             {
                 test: /\.scss$/,

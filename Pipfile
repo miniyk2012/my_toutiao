@@ -21,6 +21,7 @@ email-validator = "*"
 requests = "*"
 feedparser = "*"
 livereload = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.7"
