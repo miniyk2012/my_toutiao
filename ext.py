@@ -5,6 +5,7 @@ from datetime import datetime
 from dogpile.cache.api import NO_VALUE
 from dogpile.cache.region import make_region
 from flask_security import Security
+from flask import abort
 from flask_sqlalchemy import (
     SQLAlchemy, Model, BaseQuery, DefaultMeta, _QueryProperty)
 from sqlalchemy import (
@@ -287,6 +288,13 @@ class BaseModel(PropsMixin, Model):
     @classmethod
     def get(cls, id):
         return cls.query.get(id)
+
+    @classmethod
+    def get_or_404(cls, ident):
+        rv = cls.get(ident)
+        if rv is None:
+            abort(404)
+        return rv
 
     @classmethod
     def get_multi(cls, ids):

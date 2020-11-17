@@ -51,7 +51,6 @@ def fetch(url):
             content=strip_tags(content), created_at=created_at,
             tags=[tag.term for tag in tags])
 
-
 def main():
     with app.test_request_context():
         for model in (Post, Tag, PostTag):
@@ -64,8 +63,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
     with app.test_request_context():
-        post = Post.query.first()
+        post = Post.get_or_404(121)
         print(post.content)
         print(post.title)

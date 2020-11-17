@@ -1,6 +1,7 @@
-from corelib.flask import Flask
+from flask import render_template
 
 import config
+from corelib.flask import Flask
 from ext import security, db
 from views import index
 
@@ -19,3 +20,8 @@ def create_app():
 
 
 app = create_app()
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404

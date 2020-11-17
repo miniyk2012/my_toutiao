@@ -38,7 +38,8 @@ class Post(BaseMixin, CommentMixin, LikeMixin, CollectMixin, db.Model):
     )
 
     def url(self):
-        return '/{}/{}/'.format(self.__class__.__name__.lower(), self.id)
+        return '/{}/{}/'.format(self.__class__.__name__.lower(),
+                                self.title or self.id)
 
     @classmethod
     def __flush_event__(cls, target):

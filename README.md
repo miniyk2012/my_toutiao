@@ -62,3 +62,13 @@ python crawling.py
 ### 5. 表管理(flask-migrate)
 
 ### 6. 准备数据(写爬虫): 爬RSS: https://www.dongwm.com/atom.xml
+
+### 7. 使用Jinja2模板
+
+### 8. 使用Bootstrap
+
+### 9. 前端开发环境
+npm install cnpm -g
+cnpm i
+
+使用webpack
