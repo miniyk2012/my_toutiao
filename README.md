@@ -71,4 +71,6 @@ python crawling.py
 npm install cnpm -g
 cnpm i
 
-使用webpack
+使用webpack:
+npm run start:  watch src目录的变化, 生成static/dist/*的js文件
+python run.py:  watch src/templates目录的变化, 动态加载前端页面
