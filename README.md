@@ -77,5 +77,7 @@ npm run start:  watch src目录的变化, 生成static/dist/*的js文件
 python run.py:  watch src/templates目录的变化, 动态加载前端页面
 
 ### 10. 完成Post页面样式
+样式使用webpack来管理, 然后模板导入dist/xx.js
 
 ### 11. 注册和登录
+flask security的一系列功能: mail, 各种页面替换成中文
