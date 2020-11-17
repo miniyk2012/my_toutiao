@@ -4,7 +4,9 @@ from flask_security import current_user
 import config
 from corelib.flask import Flask
 from ext import security, db
-from views import index
+from forms import ExtendedRegisterForm, ExtendedLoginForm
+import views.index as index
+import views.account as account
 
 
 def _inject_processor():
@@ -27,10 +29,13 @@ def create_app():
 
     app.context_processor(_inject_processor)
     _inject_template_global(app)
-    
-    _state = security.init_app(app, user_datastore)
-    security._state = _state
 
+    _state = security.init_app(app, user_datastore,
+                               confirm_register_form=ExtendedRegisterForm,
+                               login_form=ExtendedLoginForm)
+
+    security._state = _state
+    app.security = security
     app.register_blueprint(index.bp, url_prefix='/')
 
     return app

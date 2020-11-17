@@ -61,6 +61,10 @@ def trunc_utf8(string, num, etc="..."):
         ret += etc
     return ret
 
+class AttrDict(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__dict__ = self
 
 class Empty:
 

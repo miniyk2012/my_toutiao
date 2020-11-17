@@ -38,8 +38,7 @@ class Post(BaseMixin, CommentMixin, LikeMixin, CollectMixin, db.Model):
     )
 
     def url(self):
-        return '/{}/{}/'.format(self.__class__.__name__.lower(),
-                                self.title or self.id)
+        return '/{}/{}/'.format(self.__class__.__name__.lower(), self.id)
 
     @classmethod
     def __flush_event__(cls, target):
@@ -59,7 +58,7 @@ class Post(BaseMixin, CommentMixin, LikeMixin, CollectMixin, db.Model):
             PostTag.post_id == self.id
         ).all()
 
-        tags = Tag.query.filter(Tag.id.in_((id for id, in at_ids))).all()
+        tags = Tag.query.filter(Tag.id.in_((id_ for id_ in at_ids))).all()
         return tags
 
     @cached_hybrid_property
@@ -87,7 +86,6 @@ class Post(BaseMixin, CommentMixin, LikeMixin, CollectMixin, db.Model):
     @cached_hybrid_property
     def netloc(self):
         return '{0.scheme}://{0.netloc}'.format(urlparse(self.orig_url))
-
 
     @staticmethod
     def _flush_insert_event(mapper, connection, target):
