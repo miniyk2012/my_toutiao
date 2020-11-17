@@ -81,5 +81,10 @@ python run.py:  watch src/templates目录的变化, 动态加载前端页面
 阿里的icon库: https://www.iconfont.cn/
 
 ### 11. 注册和登录
+
+```
+# 额, 我发现这样总会报错: pipenv install git+https://github.com/dongweiming/flask-security.git@develop#egg=flask_security
+# 所以就用pip install吧...
 pip install git+https://github.com/dongweiming/flask-security.git@develop#egg=flask_security
+```
 flask security的一系列功能: mail, 各种页面替换成中文

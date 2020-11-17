@@ -3,8 +3,9 @@ from flask_security import current_user
 
 import config
 from corelib.flask import Flask
-from ext import security, db
+from ext import security, db, mail
 from forms import ExtendedRegisterForm, ExtendedLoginForm
+from corelib.exmail import send_mail_task as _send_mail_task
 import views.index as index
 import views.account as account
 
@@ -26,6 +27,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     db.init_app(app)
+    mail.init_app(app)
 
     app.context_processor(_inject_processor)
     _inject_template_global(app)
@@ -36,7 +38,15 @@ def create_app():
 
     security._state = _state
     app.security = security
+    security.send_mail_task(_send_mail_task)
     app.register_blueprint(index.bp, url_prefix='/')
+    app.register_blueprint(account.bp, url_prefix='/')
+
+    @app.teardown_request
+    def teardown_request(exception):
+        if exception:
+            db.session.rollback()
+        db.session.remove()
 
     return app
 

@@ -6,6 +6,7 @@ from dogpile.cache.api import NO_VALUE
 from dogpile.cache.region import make_region
 from flask_security import Security
 from flask import abort
+from flask_mail import Mail
 from flask_sqlalchemy import (
     SQLAlchemy, Model, BaseQuery, DefaultMeta, _QueryProperty)
 from sqlalchemy import (
@@ -385,7 +386,7 @@ class UnLockedAlchemy(SQLAlchemy):
         return super(UnLockedAlchemy, self).apply_driver_hacks(
             app, info, options)
 
-
+mail = Mail()
 # BaseModel代替了默认的Model, 继承db.Model的那些model就能正常处理保存在redis的字段了
 db = UnLockedAlchemy(model_class=BaseModel)
 security = Security()

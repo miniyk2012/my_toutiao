@@ -73,8 +73,10 @@ SECURITY_USER_IDENTITY_ATTRIBUTES = ('email', 'name')
 SECURITY_CONFIRM_EMAIL_WITHIN = SECURITY_RESET_PASSWORD_WITHIN = '6 hours'
 
 CACHE_TYPE = 'redis'
-FROM_USER = 'no-reply@pycourses.com'
-EXMAIL_PASSWORD = ''
+FROM_USER = '812350401@qq.com'
+EXMAIL_PASSWORD = 'druqkwjelztwbdjc'
+MAIL_SERVER = 'smtp.qq.com'
+MAIL_PORT = 465
 
 PER_PAGE = 2
 

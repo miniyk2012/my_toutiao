@@ -21,6 +21,7 @@ requests = "*"
 feedparser = "*"
 livereload = "*"
 bcrypt = "*"
+setuptools = "*"
 
 [requires]
 python_version = "3.7"
