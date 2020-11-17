@@ -1,47 +1,41 @@
 const glob = require('glob')
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
-    plugins: [new MiniCssExtractPlugin()],
-    entry: glob.sync('./src/**/*.js').reduce(
-        (entries, entry) => Object.assign(entries, {[entry.split('/').pop().replace('.js', '')]: entry}), {}),
+  entry: glob.sync('./src/**/*.js').reduce(
+      (entries, entry) => Object.assign(entries, {[entry.split('/').pop().replace('.js', '')]: entry}), {}),
 
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            },
-            {
-                test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader,
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader",
-                ],
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader"
-                ]
-            }
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+           "css-loader",
+           "sass-loader"
         ]
-    },
+      },
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      }
+    ]
+  },
 
-    output: {
-        filename: '[name].js',
-        path: path.join(__dirname, 'static/dist')
-    }
+  output: {
+    filename: '[name].js',
+    path: path.join(__dirname, 'static/dist')
+  }
 }
 
 module.exports = config

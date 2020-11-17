@@ -46,7 +46,7 @@ def fetch(url):
         except AttributeError:
             tags = []
 
-        ok, post = Post.create_or_update(
+        ok, _ = Post.create_or_update(
             author_id=2, title=entry.title, orig_url=entry.link,
             content=strip_tags(content), created_at=created_at,
             tags=[tag.term for tag in tags])
