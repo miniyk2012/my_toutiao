@@ -154,7 +154,7 @@ class PostTag(BaseMixin, db.Model):
     def get_posts_by_tag(cls, identifier, page=1):
         query = cls._get_posts_by_tag(identifier)
         posts = query.paginate(page, PER_PAGE)
-        del posts.query  # Fix `TypeError: can't pickle _thread.lock objects`
+        del posts.query  # Fix `TypeError: can't pickle _thread.lock objects` 缓存时不能序列化锁对象, 因此删除该属性
         return posts
 
     @classmethod
