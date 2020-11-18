@@ -74,3 +74,4 @@ cnpm i
 使用webpack:
 npm run start:  watch src目录的变化, 生成static/dist/*的js文件
 python run.py:  watch src/templates目录的变化, 动态加载前端页面
+最终还是用templates里的模板文件, 加载static/dist/*的文件
