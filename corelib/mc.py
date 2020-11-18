@@ -5,13 +5,14 @@ import re
 from functools import wraps
 
 from sqlalchemy.ext.serializer import loads, dumps
-
+from pickle import UnpicklingError
 from corelib.db import rdb
-from corelib.utils import Empty
+from corelib.utils import Empty, empty
 
 __formaters = {}
 percent_pattern = re.compile(r'%\w')
 brace_pattern = re.compile(r'\{[\w\d\.\[\]_]+\}')
+BUILTIN_TYPES = (int, bytes, str, float, bool)
 
 
 def formater(text):
@@ -94,17 +95,22 @@ def cache(key_pattern, expire=None):
             if r is None:
                 r = f(*a, **kw)
                 if r is not None:
-                    r = dumps(r)
+                    if not isinstance(r, BUILTIN_TYPES):
+                        r = dumps(r)
+                    rdb.set(key, r, expire)
+                else:
+                    r = dumps(empty)
                     rdb.set(key, r, expire)
 
-            r = loads(r)
+            try:
+                r = loads(r)
+            except (TypeError, UnpicklingError):
+                pass
             if isinstance(r, Empty):
                 r = None
             return r
-
         _.original_function = f
         return _
-
     return deco
 
 
@@ -138,10 +144,8 @@ def pcache(key_pattern, count=300, expire=None):
                 rdb.set(key, r, expire)
             r = loads(r)
             return r[start:start + limit]
-
         _.original_function = f
         return _
-
     return deco
 
 
@@ -173,8 +177,6 @@ def pcache2(key_pattern, count=300, expire=None):
                 n, r = loads(d)
                 r = loads(r)
             return (n, r[start:start + limit])
-
         _.original_function = f
         return _
-
     return deco
