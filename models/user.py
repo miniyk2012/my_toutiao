@@ -24,13 +24,13 @@ class Role(db.Model, RoleMixin):
 
 class User(db.Model, UserMixin, BaseMixin):
     __tablename__ = 'users'
-    intro = db.Column(db.String(128), default='')
+    bio = db.Column(db.String(128), default='')
     name = db.Column(db.String(128), default='')
     nickname = db.Column(db.String(128), default='')
     email = db.Column(db.String(191), default='')
     password = db.Column(db.String(191))
     website = db.Column(db.String(191), default='')
-    github_url = db.Column(db.String(191), default='')
+    github_id = db.Column(db.String(191), default='')
     last_login_at = db.Column(db.DateTime())
     current_login_at = db.Column(db.DateTime())
     last_login_ip = db.Column(db.String(100))

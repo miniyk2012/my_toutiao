@@ -1,6 +1,7 @@
+from dataclasses import dataclass
 from datetime import datetime
 from html.parser import HTMLParser
-
+import random
 import feedparser
 
 from app import app
@@ -44,12 +45,20 @@ def fetch(url):
         try:
             tags = entry.tags
         except AttributeError:
-            tags = []
+            @dataclass
+            class Tag:
+                term: str
 
-        ok, post = Post.create_or_update(
-            author_id=2, title=entry.title, orig_url=entry.link,
+            tags = random.sample([Tag('python'), Tag('amazon'), Tag('golang'), Tag('php'), Tag('docker'), Tag('wechat'),
+                                  Tag('android'), Tag('wiki'), Tag('c++'), Tag('k8s'), Tag('mac'), Tag('linux'),
+                                  Tag('HDFS')],
+                                 k=random.randint(0, 5))
+
+        ok, _ = Post.create_or_update(
+            author_id=6, title=entry.title, orig_url=entry.link,
             content=strip_tags(content), created_at=created_at,
             tags=[tag.term for tag in tags])
+
 
 def main():
     with app.test_request_context():
@@ -63,8 +72,8 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     with app.test_request_context():
-        post = Post.get_or_404(121)
+        post = Post.query.first()
         print(post.content)
         print(post.title)

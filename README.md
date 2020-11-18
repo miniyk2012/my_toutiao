@@ -2,6 +2,8 @@
 初始化数据库: mysql -uroot -p  密码是: 123456
 生产mysql: create database mytoutiao;
 测试mysql: create database test_mytoutiao;
+
+更新数据库
 ```
 FLASK_APP=manage.py flask db init
 FLASK_APP=manage.py flask db migrate
@@ -10,6 +12,12 @@ FLASK_APP=manage.py flask db upgrade
 运行flask
 ```
 FLASK_APP=app.py flask run
+FLASK_APP=app.py FLASK_DEBUG=1 flask run
+```
+
+flask ishell命令行
+```
+FLASK_APP=manage.py flask ishell 
 ```
 
 ### 测试mysql
@@ -75,3 +83,20 @@ cnpm i
 npm run start:  watch src目录的变化, 生成static/dist/*的js文件
 python run.py:  watch src/templates目录的变化, 动态加载前端页面
 最终还是用templates里的模板文件, 加载static/dist/*的文件
+
+### 10. 完成Post页面样式
+样式使用webpack来管理, 然后模板导入dist/xx.js
+阿里的icon库: https://www.iconfont.cn/
+
+### 11. 注册和登录
+
+```
+# 额, 我发现这样总会报错: pipenv install git+https://github.com/dongweiming/flask-security.git@develop#egg=flask_security
+# 所以就用pip install吧...
+pip install git+https://github.com/dongweiming/flask-security.git@develop#egg=flask_security
+```
+flask security的一系列功能: mail, 各种页面替换成中文
+http://127.0.0.1:5000/register
+我注册的用户: yangkai 123456 812350401@qq.com
+
+### 12. 用户个人设置页面

@@ -12,7 +12,7 @@ from corelib.local_cache import lc
 
 
 class Database(_Database):
-    """提供2个直接反序列化结果的方法"""
+    """提供2个直接反序列化结果的方法, 使用的sqlalchemy的序列化方案"""
     def get2(self, name):
         rs = super().get(name)
         return loads(rs)
