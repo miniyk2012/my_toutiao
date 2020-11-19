@@ -100,3 +100,9 @@ http://127.0.0.1:5000/register
 我注册的用户: yangkai 123456 812350401@qq.com
 
 ### 12. 用户个人设置页面
+
+### 13. 标签功能
+
+### 14. 搜索(Elasticsearch)
+本地安装es
+不使用es的官方客户端, 用起来太麻烦, 使用elasticsearch-dsl, 类似walrus之于redis

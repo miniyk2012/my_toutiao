@@ -22,6 +22,7 @@ feedparser = "*"
 livereload = "*"
 bcrypt = "*"
 setuptools = "*"
+elasticsearch-dsl = "==6.2.1"
 
 [requires]
 python_version = "3.7"
