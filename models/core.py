@@ -51,14 +51,12 @@ class Post(BaseMixin, CommentMixin, LikeMixin, CollectMixin, db.Model):
         return cls.cache.filter(title=identifier).first()
 
     @property
-    @cache(MC_KEY_POST_TAGS % ('{self.id}'))
     def tags(self):
         at_ids = PostTag.query.with_entities(
             PostTag.tag_id).filter(
             PostTag.post_id == self.id
         ).all()
-
-        tags = Tag.query.filter(Tag.id.in_((id_ for id_ in at_ids))).all()
+        tags = Tag.query.filter(Tag.id.in_(id_ for id_, in at_ids)).all()
         return tags
 
     @cached_hybrid_property

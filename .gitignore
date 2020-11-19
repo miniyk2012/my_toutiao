@@ -293,3 +293,6 @@ yarn-error.log
 
 # End of https://www.gitignore.io/api/flask,python,pycharm+all,visualstudiocode,vuejs
 migrations
+
+permdir/*
+!permdir/avatars/.gitkeep

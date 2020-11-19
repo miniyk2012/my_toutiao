@@ -1,13 +1,13 @@
-"""redis缓存装饰器, 由豆瓣的lib-mc修改得来"""
-
-import inspect
 import re
+import inspect
 from functools import wraps
+from pickle import UnpicklingError
 
 from sqlalchemy.ext.serializer import loads, dumps
-from pickle import UnpicklingError
+
 from corelib.db import rdb
 from corelib.utils import Empty, empty
+
 
 __formaters = {}
 percent_pattern = re.compile(r'%\w')
@@ -71,13 +71,11 @@ def gen_key_factory(key_pattern, arg_names, defaults):
         else:
             key = format(key_pattern, *[aa[n] for n in arg_names], **aa)
         return key and key.replace(' ', '_'), aa
-
     return gen_key
 
 
 def cache(key_pattern, expire=None):
     """redis缓存"""
-
     def deco(f):
         arg_names, varargs, varkw, defaults = inspect.getargspec(f)
         if varargs or varkw:
@@ -116,7 +114,6 @@ def cache(key_pattern, expire=None):
 
 def pcache(key_pattern, count=300, expire=None):
     """redis分页缓存"""
-
     def deco(f):
         arg_names, varargs, varkw, defaults = inspect.getargspec(f)
         if varargs or varkw:
@@ -150,6 +147,7 @@ def pcache(key_pattern, count=300, expire=None):
 
 
 def pcache2(key_pattern, count=300, expire=None):
+    """和pcache区别是还返回总数n, 其他都一样"""
     def deco(f):
         arg_names, varargs, varkw, defaults = inspect.getargspec(f)
         if varargs or varkw:

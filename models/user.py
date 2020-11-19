@@ -55,23 +55,26 @@ class User(db.Model, UserMixin, BaseMixin):
     @property
     def avatar_path(self):
         avatar_id = self.avatar_id
-        return '' if not avatar_id else '{}/static/avatars/{}.png'.format(avatar_id)
+        return '' if not avatar_id else '/static/avatars/{}.png'.format(avatar_id)
 
     def update_avatar(self, avatar_id):
         self.avatar_id = avatar_id
         self.save()
 
-    def upload_avatar(self, avatar_url):
+    def upload_avatar(self, img):
         avatar_id = generate_id()
         filename = os.path.join(
             UPLOAD_FOLDER, 'avatars', '{}.png'.format(avatar_id))
-        r = requests.get(avatar_url, stream=True)
-        if r.status_code == 200:
-            with open(filename, 'wb') as f:
-                for chunk in r.iter_content(1024):
-                    f.write(chunk)
-            self.avatar_id = avatar_id
-            self.save()
+
+        if isinstance(img, str) and img.startswith('http'):
+            r = requests.get(img, stream=True)
+            if r.status_code == 200:
+                with open(filename, 'wb') as f:
+                    for chunk in r.iter_content(1024):
+                        f.write(chunk)
+        else:
+            img.save(filename)
+        self.update_avatar(avatar_id)
 
     def follow(self, from_id):
         ok, _ = Contact.create(to_id=self.id, from_id=from_id)

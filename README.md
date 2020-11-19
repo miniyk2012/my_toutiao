@@ -17,7 +17,7 @@ FLASK_APP=app.py FLASK_DEBUG=1 flask run
 
 flask ishell命令行
 ```
-FLASK_APP=manage.py flask ishell 
+FLASK_APP=manage.py FLASK_DEBUG=1 flask ishell 
 ```
 
 ### 测试mysql
