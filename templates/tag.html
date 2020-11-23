@@ -3,15 +3,16 @@
 
 {% block title %}{{ tag.name }} - 头条{% endblock %}
 
-{% block head %}
+{% block bottomscript %}
 {{ super() }}
   <script src="{{url_for('static', filename='dist/tag.js')}}"></script>
 {% endblock %}
 
 {% block content %}
   <h3 class="tag-name text-center">{{ tag.name }}</h3>
+    {#  posts是Pagination对象  #}
   {% for post in posts.items %}
     {{ macros.card(post) }}
   {% endfor %}
-  {{ macros.render_pagination(posts, 'index.tag', ident) }}
+  {{ macros.render_pagination(posts, 'index.tag', ident=ident) }}
 {% endblock %}

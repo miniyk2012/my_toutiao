@@ -78,6 +78,8 @@ EXMAIL_PASSWORD = 'druqkwjelztwbdjc'
 MAIL_SERVER = 'smtp.qq.com'
 MAIL_PORT = 465
 
+
+ES_HOSTS = ['localhost']
 PER_PAGE = 2
 
 if not os.path.exists(UPLOAD_FOLDER):

@@ -6,6 +6,7 @@ import feedparser
 
 from app import app
 from models.core import Post, PostTag, Tag, db
+from models.search import Item
 
 
 class MLStripper(HTMLParser):
@@ -62,6 +63,8 @@ def fetch(url):
 
 def main():
     with app.test_request_context():
+        Item._index.delete(ignore=404)  # 删除Elasticsearch索引，销毁全部数据
+        Item.init()
         for model in (Post, Tag, PostTag):
             model.query.delete()  # 数据库操作要通过SQLAlchemy，不要直接链接数据库操作
         db.session.commit()
