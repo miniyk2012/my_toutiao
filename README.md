@@ -106,3 +106,8 @@ http://127.0.0.1:5000/register
 ### 14. 搜索(Elasticsearch)
 本地安装es
 不使用es的官方客户端, 用起来太麻烦, 使用elasticsearch-dsl, 类似walrus之于redis
+安装在/opt/elastaicsearch
+启动: cd /opt/elasticsearch/; ./bin/elasticsearch -d -p pid
+停止: pkill -F pid
+检测启动成功与否: curl -X GET "localhost:9200/?pretty"
+
