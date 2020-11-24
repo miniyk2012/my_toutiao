@@ -63,7 +63,7 @@ def fetch(url):
 def main():
     with app.test_request_context():
         for model in (Post, Tag, PostTag):
-            model.query.delete()  # 数据库操作要通过SQLAlchemy，不要直接链接数据库操作
+            model.query.delete()  # 数据库操作要通过SQLAlchemy，不要直接链接数据库操作, 这样才能正确的触发事件(如清3缓存, 清es索引)
         db.session.commit()
 
         for site in (
