@@ -111,3 +111,13 @@ http://127.0.0.1:5000/register
 停止: pkill -F pid
 检测启动成功与否: curl -X GET "localhost:9200/?pretty"
 
+### 15. 使用消息队列/Celery处理事件
+需要另起一个进程, 专门跑worker进程哟
+
+### 16. 点赞/收藏
+ActionMixin抽象出公告方法
+api的设计非常漂亮, class-based view和marshal的使用可以重点学习
+
+### 17. 评论
+
+
